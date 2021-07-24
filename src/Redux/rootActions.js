@@ -1,3 +1,5 @@
-import { GlobalActions } from './Slices/newsSlice';
+import { CountriesActions } from "./Slices/countriesSlice";
+import { CountryActions } from "./Slices/countrySlice";
+import { GlobalActions } from "./Slices/globalSlice";
 
-export { GlobalActions };
+export { CountriesActions, CountryActions, GlobalActions };
