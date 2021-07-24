@@ -1,6 +1,6 @@
-import React from 'react'
-import { Redirect, Route } from 'react-router-dom'
-import checkToken from '../utilities/checkToken'
+import React from "react";
+import { Redirect, Route } from "react-router-dom";
+import { checkToken } from "../utilities/checkToken";
 
 function AuthRoute({ component: Component, ...rest }) {
   return (
