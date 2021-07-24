@@ -1,6 +1,6 @@
-import React from 'react'
-import { Redirect, Route } from 'react-router-dom'
-import checkToken from '../utilities/checkToken'
+import React from "react";
+import { Redirect, Route } from "react-router-dom";
+import { checkToken } from "../utilities/checkToken";
 
 function PrivateRoute({ component: Component, ...rest }) {
   return (
@@ -10,7 +10,9 @@ function PrivateRoute({ component: Component, ...rest }) {
         return checkToken() ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: "/login", state: { from: props.location } }} />
+          <Redirect
+            to={{ pathname: "/login", state: { from: props.location } }}
+          />
         );
       }}
     />
