@@ -10,27 +10,24 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
   Typography,
-  FormGroup,
-  FormControlLabel,
-  Switch,
   Box,
 } from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import { NavLink } from "react-router-dom";
+import MapIcon from "@material-ui/icons/Map";
+import BallotIcon from "@material-ui/icons/Ballot";
+import { NavLink, Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
-import i18next from "i18next";
 import SelectionLanguage from "../SelectionLanguage/SelectionLanguage";
 import { GlobalActions } from "../../Redux/rootActions";
 import { useDispatch, useSelector } from "react-redux";
+import { checkToken } from "../../utilities/checkToken";
 
 const drawerWidth = 240;
 
@@ -50,11 +47,13 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
       "& button": {
         marginRight: "16px",
+        width: "100%",
+        justifyContent: "flex-start",
       },
     },
     "& a.active": {
       "& button": {
-        color: "red",
+        backgroundColor: "pink",
       },
     },
   },
@@ -106,7 +105,6 @@ function MainLayout(props) {
   };
 
   const handleChangeLanguage = (value) => {
-    // i18n.changeLanguage(value);
     dispatch(GlobalActions.changeLanguage({ language: value }));
   };
   const handleDrawerToggle = () => {
@@ -120,12 +118,17 @@ function MainLayout(props) {
       <List>
         <ListItem className={classes.navigation}>
           <NavLink exact to={"/"}>
-            <Button startIcon={<HomeOutlinedIcon />}>Home</Button>
+            <Button startIcon={<HomeOutlinedIcon />}>{t("common.home")}</Button>
           </NavLink>
         </ListItem>
         <ListItem className={classes.navigation}>
           <NavLink exact to={"/news"}>
-            <Button startIcon={<HomeOutlinedIcon />}>News</Button>
+            <Button startIcon={<BallotIcon />}>{t("common.news")}</Button>
+          </NavLink>
+        </ListItem>
+        <ListItem className={classes.navigation}>
+          <NavLink exact to={"/overview"}>
+            <Button startIcon={<MapIcon />}>{t("common.overview")}</Button>
           </NavLink>
         </ListItem>
       </List>
@@ -170,13 +173,25 @@ function MainLayout(props) {
               {selected ? <Brightness4Icon /> : <Brightness7Icon />}
             </ToggleButton>
           </Box>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.logoutButton}
-          >
-            LogOut
-          </Button>
+          {checkToken() ? (
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.logoutButton}
+            >
+              {t("common.logout")}
+            </Button>
+          ) : (
+            <Link to={"/login"}>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.logoutButton}
+              >
+                {t("common.login")}
+              </Button>
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">

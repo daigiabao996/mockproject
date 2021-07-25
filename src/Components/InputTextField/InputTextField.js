@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { TextField } from "@material-ui/core";
+import { TextField, InputAdornment } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 // import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -33,7 +33,15 @@ export default function InputTextField({ onChangeCb, selectedCountry }) {
             label="Search input"
             margin="normal"
             variant="outlined"
-            InputProps={{ ...params.InputProps, type: "search" }}
+            InputProps={{
+              ...params.InputProps,
+              type: "search",
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
           />
         )}
       />

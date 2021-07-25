@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const useStyles = makeStyles((theme) => ({
   [theme.breakpoints.up("sm")]: {
     selectionLanguage: {
-      color: "white",
+      color: "black",
       "& option": {
         color: "black",
       },
