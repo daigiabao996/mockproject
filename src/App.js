@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import CovidDetail from "./Pages/CovidDetail/CovidDetail";
 import Home from "./Pages/Home/Home";
+import OverView from "./Pages/OverView/OverView";
 import News from "./Pages/News/News";
 import NewsDetail from "./Pages/NewsDetail/NewsDetail";
 import SignIn from "./Pages/Login/SignIn";
@@ -40,6 +41,7 @@ function App() {
                 path="/countries/:country"
                 component={CovidDetail}
               />
+              <PrivateRoute exact path="/overview" component={OverView} />
               <Route exact path="/news" component={News} />
               <Route exact path="/news/:newsid" component={NewsDetail} />
               <AuthRoute exact path="/login" component={SignIn} />

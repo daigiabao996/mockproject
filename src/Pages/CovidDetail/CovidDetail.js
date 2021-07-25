@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import InputTextField from "../../Components/InputTextField/InputTextField";
 import Highlight from "../../Components/Highlight/Highlight";
 import Summary from "../../Components/Summary/Summary";
 import mapAPI from "../../API/map/mapAPI";
-import { CountriesActions, CountryActions } from "../../Redux/rootActions";
+import { CountryActions } from "../../Redux/rootActions";
 import { Typography, CircularProgress } from "@material-ui/core";
 import _ from "lodash";
 import MainLayout from "../../Components/MainLayout/MainLayout";
@@ -17,17 +16,6 @@ export default function CovidDetail() {
   const [country, setCountry] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  // useEffect(() => {
-  //   mapAPI.getAllCountries().then((response) => {
-  //     const countries = _.sortBy(response, "Country");
-  //     setCountries(countries);
-  //     dispatch(CountriesActions.getCountries(countries));
-  //     setSelectedCountry("Viet Nam");
-  //   });
-  // }, []);
-  // const handleOnChange = useCallback((e, value) => {
-  //   setSelectedCountry(value);
-  // }, []);
   useEffect(() => {
     setLoading(true);
     if (selectedCountry) {
@@ -70,6 +58,7 @@ export default function CovidDetail() {
     }
     return [];
   }, [country]);
+  console.log({ summary });
   return (
     <MainLayout>
       <Typography variant="h3" component="h2" style={{ marginBottom: "15px" }}>

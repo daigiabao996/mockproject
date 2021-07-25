@@ -10,32 +10,38 @@ import InputTextField from "../../Components/InputTextField/InputTextField";
 import MainLayout from "../../Components/MainLayout/MainLayout";
 
 const columns = [
-  { field: "Country", headerName: "Country", flex: 2 },
-  { field: "CountryCode", headerName: "CountryCode", flex: 1 },
+  {
+    field: "Country",
+    headerName: "Country",
+    flex: 3,
+  },
+  {
+    field: "CountryCode",
+    headerName: "CountryCode",
+    flex: 2,
+  },
   {
     field: "TotalConfirmed",
     headerName: "TotalConfirmed",
     type: "number",
-    flex: 2,
+    flex: 3,
   },
   {
     field: "TotalRecovered",
     headerName: "TotalRecovered",
     type: "number",
-    flex: 2,
+    flex: 3,
   },
   {
     field: "TotalDeaths",
     headerName: "TotalDeaths",
     type: "number",
-    flex: 2,
+    flex: 3,
   },
 ];
 
 export default function Home() {
   const [countries, setCountries] = useState([]);
-  // const [selectedCountry, setSelectedCountry] = useState("");
-  // const [country, setCountry] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -45,8 +51,10 @@ export default function Home() {
       .getAllCountries()
       .then((response) => {
         const countries = _.sortBy(response.Countries, "Country");
+        const worldwide = response.Global;
         setCountries(countries);
         dispatch(CountriesActions.getCountries(countries));
+        dispatch(CountriesActions.getWorldwide(worldwide));
         setLoading(false);
       })
       .catch((err) => {
@@ -55,10 +63,6 @@ export default function Home() {
       });
   }, []);
   const handleOnChange = useCallback((e, value) => {
-    // const searchCountry = countries.filter((item) => {
-    //   return item.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
-    // });
-    // setCountries(searchCountry);
     dispatch(CountriesActions.getSelectedCountry(value));
     history.push(`/countries/${value}`);
   }, []);
