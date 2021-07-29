@@ -81,7 +81,7 @@ export default function News() {
                   />
                   <CardContent>
                     <Typography gutterBottom variant="span" component="span">
-                      {moment(item.publishedAt).format("DD/MM/YYYY")}
+                      (moment(item.publishedAt).format("DD/MM/YYYY"))
                     </Typography>
                     <Typography gutterBottom variant="h5" component="h4">
                       {item.title}
