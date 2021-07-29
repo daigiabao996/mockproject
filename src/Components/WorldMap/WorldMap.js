@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsMap from "highcharts/modules/map";
 import HighchartsReact from "highcharts-react-official";
-
+import "./WorldMap.scss";
 import map from "@highcharts/map-collection/custom/world.geo.json";
 
 HighchartsMap(Highcharts);
@@ -14,21 +14,15 @@ const initOptions = {
     map: map,
   },
   title: {
-    text: "World covid-19 by country",
+    text: "World Covid Cases",
   },
+
   legend: {
-    enabled: false,
+    layout: "vertical",
+    align: "right",
+    verticalAlign: "bottom",
   },
-  colorAxis: {
-    min: 0,
-    stops: [
-      [0.2, "#FFC4AA"],
-      [0.4, "#FF8A66"],
-      [0.6, "#FF392B"],
-      [0.8, "#B71525"],
-      [1, "	#7A0826"],
-    ],
-  },
+
   mapNavigation: {
     enabled: true,
     buttonOptions: {
@@ -36,20 +30,64 @@ const initOptions = {
     },
   },
 
+  tooltip: {
+    backgroundColor: null,
+    borderWidth: 0,
+    shadow: false,
+    useHTML: true,
+    pointFormat:
+      '<span class="f32"><span class="flag {point.properties.hc-key}"></span></span>' +
+      " {point.name}: <b>{point.value}</b> cases",
+  },
+
+  colorAxis: {
+    dataClasses: [
+      {
+        color: "#FFDAB9",
+        from: 0,
+        name: "<500.000",
+        to: 5e5 - 1,
+      },
+      {
+        color: "#00FFFF",
+        from: 5e5,
+        name: ">500.000",
+        to: 1e6 - 1,
+      },
+      {
+        color: "#00FF00",
+        from: 1e6,
+        name: ">1.000.000",
+        to: 5e6 - 1,
+      },
+      {
+        color: "	#FFFF00",
+        from: 5e6,
+        name: ">5.000.000",
+        to: 1e7 - 1,
+      },
+      {
+        color: "#FF1493",
+        from: 1e7,
+        name: ">10.000.000",
+        to: 25e6 - 1,
+      },
+      {
+        color: "#FF0000",
+        from: 25e6,
+        name: ">25.000.000",
+      },
+    ],
+  },
+
   series: [
     {
-      name: "Countries",
-      color: "#E0E0E0",
-      enableMouseTracking: false,
-    },
-    {
-      type: "mapbubble",
-      name: "Cases covid-19",
-      joinBy: ["iso-a3", "code3"],
-      minSize: 4,
-      maxSize: "12%",
-      tooltip: {
-        pointFormat: "{point.properties.name}: {point.z} cases",
+      joinBy: ["iso-a2", "code"],
+      name: "Covid Cases",
+      states: {
+        hover: {
+          color: "#a4edba",
+        },
       },
     },
   ],
@@ -61,26 +99,27 @@ const HighMaps = ({ mapData }) => {
     if (mapData && Object.keys(mapData).length) {
       const database = mapData.map((feature) => ({
         code3: feature.properties["iso-a3"],
-        z: feature.properties.covidCase.cases,
+        name: feature.properties["name"],
+        value:
+          feature.properties.covidCase.cases < 1
+            ? "none"
+            : feature.properties.covidCase.cases,
+        code: feature.properties["iso-a2"],
       }));
-      console.log({ database });
       setOptions(() => ({
         ...initOptions,
-        series: [
-          {
-            ...initOptions.series[0],
-          },
-          { ...initOptions.series[1], data: database },
-        ],
+        series: [{ ...initOptions.series[0], data: database }],
       }));
     }
   }, [mapData]);
   return (
-    <HighchartsReact
-      highcharts={Highcharts}
-      options={options}
-      constructorType={"mapChart"}
-    />
+    <div className="worldmap">
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={options}
+        constructorType={"mapChart"}
+      />
+    </div>
   );
 };
 

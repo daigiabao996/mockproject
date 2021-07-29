@@ -1,8 +1,8 @@
 import newsConfig from "./newsConfig";
 
 const newsAPI = {
-  getAllNews() {
-    const url = `/api/json/v1/1/lookup.php?i=${id}`;
+  getAllNews(param) {
+    const url = `/top-headlines?q=${param}&apiKey=efc9ca47d5bb41cfb313cae3661141c0`;
     return newsConfig.get(url);
   },
 };

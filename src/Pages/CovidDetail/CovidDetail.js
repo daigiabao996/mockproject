@@ -1,14 +1,26 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Highlight from "../../Components/Highlight/Highlight";
-import Summary from "../../Components/Summary/Summary";
 import mapAPI from "../../API/map/mapAPI";
-import { CountryActions } from "../../Redux/rootActions";
-import { Typography, CircularProgress } from "@material-ui/core";
-import _ from "lodash";
+import Highlight from "../../Components/Highlight/Highlight";
+import Loading from "../../Components/Loading/Loading";
 import MainLayout from "../../Components/MainLayout/MainLayout";
+import Summary from "../../Components/Summary/Summary";
+import { CountryActions } from "../../Redux/rootActions";
+
+const useStyles = makeStyles((theme) => ({
+  title: {
+    marginBottom: theme.spacing(8),
+    textAlign: "center",
+  },
+  highlight: {
+    textAlign: "center",
+  },
+}));
 
 export default function CovidDetail() {
+  const classes = useStyles();
   const selectedCountry = useSelector(
     (state) => state.CountriesReducer.selectedCountry
   );
@@ -16,7 +28,7 @@ export default function CovidDetail() {
   const [country, setCountry] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
+  const getSelectedCountry = () => {
     setLoading(true);
     if (selectedCountry) {
       const selectedCountryReport = countries.find(
@@ -34,7 +46,8 @@ export default function CovidDetail() {
           setLoading(false);
         });
     }
-  }, [selectedCountry, countries]);
+  };
+  useEffect(getSelectedCountry, [selectedCountry, countries]); // eslint-disable-line react-hooks/exhaustive-deps
   const summary = useMemo(() => {
     if (country && country.length) {
       const latestData = country[country.length - 1];
@@ -58,25 +71,23 @@ export default function CovidDetail() {
     }
     return [];
   }, [country]);
-  console.log({ summary });
   return (
     <MainLayout>
-      <Typography variant="h3" component="h2" style={{ marginBottom: "15px" }}>
+      <Typography variant="h3" component="h2" className={classes.title}>
         {selectedCountry}
       </Typography>
       {loading ? (
-        <CircularProgress color="secondary" />
+        <Loading />
       ) : (
         <>
-          {/* <InputTextField onChangeCb={handleOnChange} value={selectedCountry} /> */}
           {country.length === 0 ? (
-            <Typography variant="h5" component="h2">
-              Nước không có bệnh bạn ơi
+            <Typography variant="h5" component="h2" className={classes.title}>
+              API cùi mía nên một số nước nó không có dữ liệu á!!!
             </Typography>
           ) : (
             <>
-              <Highlight summary={summary} />
-              <Summary />
+              <Highlight summary={summary} className={classes.highlight} />
+              <Summary country={country} />
             </>
           )}
         </>

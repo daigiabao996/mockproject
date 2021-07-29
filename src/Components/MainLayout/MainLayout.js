@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   AppBar,
@@ -72,6 +73,11 @@ const useStyles = makeStyles((theme) => ({
   headerName: {
     display: "flex",
   },
+  modeButton: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginRight: "20px",
+  },
   logoutButton: {
     display: "flex",
     justifyContent: "flex-end",
@@ -92,8 +98,9 @@ function MainLayout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const globalState = useSelector((state) => state.GlobalReducer);
-  const [selected, setSelected] = React.useState(false);
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [selected, setSelected] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const history = useHistory();
   const handleChangeModeTheme = () => {
     setSelected(!selected);
     if (selected) {
@@ -105,6 +112,10 @@ function MainLayout(props) {
 
   const handleChangeLanguage = (value) => {
     dispatch(GlobalActions.changeLanguage({ language: value }));
+  };
+  const handleSignOut = () => {
+    localStorage.removeItem("user");
+    history.push("/login");
   };
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -163,20 +174,21 @@ function MainLayout(props) {
           <Typography variant="h6" noWrap className={classes.headerName}>
             Covid-19
           </Typography>
-          <Box flex="1 0 auto">
-            <ToggleButton
-              value="check"
-              selected={selected}
-              onChange={handleChangeModeTheme}
-            >
-              {selected ? <Brightness4Icon /> : <Brightness7Icon />}
-            </ToggleButton>
-          </Box>
+          <Box flex="1 0 auto" />
+          <ToggleButton
+            value="check"
+            selected={selected}
+            onChange={handleChangeModeTheme}
+            className={classes.modeButton}
+          >
+            {selected ? <Brightness4Icon /> : <Brightness7Icon />}
+          </ToggleButton>
           {checkToken() ? (
             <Button
               variant="contained"
               color="secondary"
               className={classes.logoutButton}
+              onClick={handleSignOut}
             >
               {t("common.logout")}
             </Button>
