@@ -18,5 +18,8 @@
     "signup_checkBox":"Tôi muốn nhận thông tin qua mail"
   },
   "home": {},
-  "homeDetail": {}
+    "homeDetail": {},
+    "overview": {
+      "title" : "Tình hình covid-19 của Thế giới"
+    }
 }

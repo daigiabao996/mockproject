@@ -1,74 +1,109 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { Box, Grid, Typography } from "@material-ui/core";
+import _ from "lodash";
+import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import mapAPI from "../../API/map/mapAPI";
+import LineChart from "../../Components/Chart/LineChart/LineChart";
+import Highlight from "../../Components/Highlight/Highlight";
+import Loading from "../../Components/Loading/Loading";
 import MainLayout from "../../Components/MainLayout/MainLayout";
 import WorldMap from "../../Components/WorldMap/WorldMap";
-import Highlight from "../../Components/Highlight/Highlight";
-import _ from "lodash";
+import { CountriesActions } from "../../Redux/rootActions";
+import { addCasesToGEOJson } from "../../utilities/addCasesToGEOJson";
 
 export default function OverView() {
-  const [mapData, setMapData] = useState({});
+  const [mapData, setMapData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [worldData, setWorldData] = useState([]);
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
   const countries = useSelector((state) => state.CountriesReducer.countries);
-  const worldwide = useSelector((state) => state.CountriesReducer.worldwide);
-  console.log({ worldwide });
-  const addCasesToGEOJson = (countries, mapData) => {
-    let countryList = mapData?.default?.features;
-    for (let i = 0; i < countryList.length; i++) {
-      let country = countryList[i];
-      const covidCountry = countries.find(
-        (x) => x.CountryCode === country.properties["iso-a2"]
-      );
-      if (covidCountry) {
-        const cases = covidCountry.TotalConfirmed;
-        const textCases = new Intl.NumberFormat().format(cases);
-        _.setWith(country, "properties.covidCase", {
-          cases: cases,
-          textCases: textCases,
-        });
-      }
-      if (!covidCountry) {
-        _.setWith(country, "properties.covidCase", {
-          cases: 0,
-          textCases: "0",
-        });
-      }
-    }
-    return countryList;
+  const getMapData = () => {
+    setLoading(true);
+    import("@highcharts/map-collection/custom/world.geo.json")
+      .then((response) => {
+        const data = addCasesToGEOJson(countries, response);
+        setMapData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log({ err });
+        setLoading(false);
+      });
+  };
+  const getChartData = () => {
+    setLoading(true);
+    mapAPI
+      .getWorldwide()
+      .then((response) => {
+        const data = _.sortBy(response, "Date");
+        setWorldData(data);
+        dispatch(CountriesActions.getWorldwide(data));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log({ err });
+        setLoading(false);
+      });
   };
   const summary = useMemo(() => {
-    if (worldwide) {
+    if (worldData && worldData.length) {
+      const latestData = worldData[worldData.length - 1];
       return [
         {
           title: "Số ca nhiễm",
-          count: worldwide.TotalConfirmed,
+          count: latestData.TotalConfirmed,
           type: "confirmed",
         },
         {
           title: "Khỏi",
-          count: worldwide.TotalRecovered,
+          count: latestData.TotalRecovered,
           type: "recovered",
         },
         {
           title: "Tử vong",
-          count: worldwide.TotalDeaths,
+          count: latestData.TotalDeaths,
           type: "death",
         },
       ];
     }
     return [];
-  }, [worldwide]);
-  console.log({ summary });
-  useEffect(() => {
-    import("@highcharts/map-collection/custom/world.geo.json")
-      .then((res) => {
-        const data = addCasesToGEOJson(countries, res);
-        setMapData(data);
-      })
-      .catch((err) => console.log({ err }));
-  }, []);
+  }, [worldData]);
+  console.log(worldData);
+  useEffect(getMapData, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(getChartData, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <MainLayout>
-      <Highlight summary={summary} />
-      <WorldMap mapData={mapData} />
+      <Typography
+        variant="h2"
+        component="h2"
+        style={{
+          fontWeight: "bold",
+          marginBottom: "30px",
+          textAlign: "center",
+        }}
+      >
+        {t("overview.title")}
+      </Typography>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Highlight summary={summary} />
+          <Box mt="20px" mb="20px">
+            <WorldMap mapData={mapData} />
+          </Box>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <LineChart
+                type={["TotalConfirmed", "TotalRecovered", "TotalDeaths"]}
+                country={worldData}
+              />
+            </Grid>
+          </Grid>
+        </>
+      )}
     </MainLayout>
   );
 }

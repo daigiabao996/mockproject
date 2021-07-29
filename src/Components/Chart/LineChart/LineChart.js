@@ -1,32 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import moment from 'moment';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { Button, ButtonGroup } from "@material-ui/core";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 
-const generateOptions = (customData, title, type) => {
-  const categories = customData.map((item) => moment(item.Date).format('DD/MM/YYYY'));
+const generateOptions = (customData, type) => {
+  const categories = customData.map((item) =>
+    moment(item.Date).format("DD/MM/YYYY")
+  );
 
   return {
     chart: {
       height: 500,
+      zoomType: "x",
     },
     title: {
-      text: title,
+      text: "Tình hình covid trong nước",
     },
     xAxis: {
       categories: categories,
       crosshair: true,
     },
-    colors: ['red'],
+    colors: ["red"],
     yAxis: {
       min: 0,
       title: {
         text: null,
       },
       labels: {
-        align: 'right',
+        align: "right",
       },
     },
     tooltip: {
@@ -34,7 +36,7 @@ const generateOptions = (customData, title, type) => {
       pointFormat:
         '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
         '<td style="padding:0"><b>{point.y} ca</b></td></tr>',
-      footerFormat: '</table>',
+      footerFormat: "</table>",
       shared: true,
       useHTML: true,
     },
@@ -46,64 +48,72 @@ const generateOptions = (customData, title, type) => {
     },
     series: [
       {
-        name: title,
-        data: customData.map((item) => item[type]),
+        name: "Tổng số ca nhiễm",
+        data: customData.map((item) => item[type[0]]),
+        color: "yellow",
+      },
+      {
+        name: "Tổng số ca khỏi",
+        data: customData.map((item) => item[type[1]]),
+        color: "green",
+      },
+      {
+        name: "Tổng số ca chết",
+        data: customData.map((item) => item[type[2]]),
+        color: "red",
       },
     ],
   };
 };
 
-export default function LineChart({ title, type }) {
+export default function LineChart({ country, type }) {
   const [options, setOptions] = useState({});
-  const [reportType, setReportType] = useState('all');
-  const country = useSelector((state) => state.CountryReducer.country);
-
+  const [reportType, setReportType] = useState("all");
   useEffect(() => {
     let customData = [];
     switch (reportType) {
-      case 'all':
+      case "all":
         customData = country;
         break;
-      case '30':
-        customData = country.slice(Math.max(country.length - 30, 1));
+      case "30":
+        customData = country.slice(country.length - 30);
         break;
-      case '7':
-        customData = country.slice(Math.max(country.length - 7, 1));
+      case "7":
+        customData = country.slice(country.length - 7);
         break;
 
       default:
         customData = country;
         break;
     }
-
-    setOptions(generateOptions(customData, title, type));
-  }, [country, reportType]);
+    setOptions(generateOptions(customData, type));
+  }, [country, reportType]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
       <ButtonGroup
-        size='small'
-        aria-label='small outlined button group'
+        size="small"
+        aria-label="small outlined button group"
         style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
+          display: "flex",
+          justifyContent: "flex-end",
         }}
       >
         <Button
-          color={reportType === 'all' ? 'secondary' : ''}
-          onClick={() => setReportType('all')}
+          color={reportType === "all" ? "secondary" : ""}
+          onClick={() => setReportType("all")}
         >
           Tất cả
         </Button>
         <Button
-          color={reportType === '30' ? 'secondary' : ''}
-          onClick={() => setReportType('30')}
+          color={reportType === "30" ? "secondary" : ""}
+          onClick={() => setReportType("30")}
         >
           30 ngày
         </Button>
         <Button
-          color={reportType === '7' ? 'secondary' : ''}
-          onClick={() => setReportType('7')}
+          color={reportType === "7" ? "secondary" : ""}
+          onClick={() => setReportType("7")}
         >
           7 ngày
         </Button>

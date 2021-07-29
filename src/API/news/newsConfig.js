@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const newsConfig = axios.create({
-  baseURL: "https://api.covid19api.com",
+  baseURL: "http://newsapi.org/v2",
   // headers: {
   // 	"Content-Type": "application/json",
   // },

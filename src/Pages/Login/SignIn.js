@@ -1,12 +1,11 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -39,10 +38,23 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
   const history = useHistory();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
+  const account = JSON.parse(localStorage.getItem("account"));
 
   const handleSignIn = (values) => {
     if (values.username === "admin" && values.password === "admin") {
+      localStorage.setItem("user", JSON.stringify(values));
+      enqueueSnackbar("Login successfully", {
+        variant: "success",
+      });
+      history.push("/");
+    } else if (
+      account.filter(
+        (account) =>
+          account.username === values.username &&
+          account.password === values.password
+      ).length !== 0
+    ) {
       localStorage.setItem("user", JSON.stringify(values));
       enqueueSnackbar("Login successfully", {
         variant: "success",
@@ -127,14 +139,10 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="" variant="body2">
-                Forgot password?
-              </Link>
+              <Link to={"/register"}>Forgot password?</Link>
             </Grid>
             <Grid item>
-              <Link to={"/register"} variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+              <Link to={"/register"}>Don't have an account? Sign Up</Link>
             </Grid>
           </Grid>
         </form>

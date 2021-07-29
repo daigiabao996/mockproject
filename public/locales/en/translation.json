@@ -18,6 +18,9 @@
       "signup_checkBox":"I want to receive inspiration, marketing promotions and updates via email."
     },
     "home": {},
-    "homeDetail": {}
-  }
+    "homeDetail": {},
+    "overview": {
+      "title" : "Overview covid-19 in the world"
+    }
+}
   
