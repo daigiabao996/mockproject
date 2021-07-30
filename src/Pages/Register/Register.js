@@ -10,12 +10,14 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useFormik } from "formik";
-import i18next from "i18next";
 import { useSnackbar } from "notistack";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
+import Loading from "../../Components/Loading/Loading";
 import SelectionLanguage from "../../Components/SelectionLanguage/SelectionLanguage";
+import { GlobalActions } from "../../Redux/rootActions";
 import { RegisterSchema } from "../../yup/yup";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,9 +43,11 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const globalState = useSelector((state) => state.GlobalReducer);
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-
   const formik = useFormik({
     initialValues: {
       firstname: "",
@@ -58,156 +62,179 @@ export default function SignUp() {
   });
 
   const handleChangeLanguage = (value) => {
-    i18next.changeLanguage(value);
+    dispatch(GlobalActions.changeLanguage({ language: value }));
   };
   const handleRegister = (values) => {
-    const newAccount = {
-      username: values.username,
-      password: values.password,
-      firstname: values.firstname,
-      lastname: values.lastname,
-    };
-    let account = JSON.parse(localStorage.getItem("account"));
-    if (!account) {
-      account = new Array([]);
-      account[0] = newAccount;
-    } else {
-      account.push(newAccount);
-    }
-    localStorage.setItem("account", JSON.stringify(account));
-    enqueueSnackbar("Your account has been created", {
-      variant: "success",
-    });
-    history.push("/login");
+    setLoading(true);
+    setTimeout(() => {
+      const newAccount = {
+        firstname: values.firstname,
+        lastname: values.lastname,
+        username: values.username,
+        password: values.password,
+      };
+      let account = JSON.parse(localStorage.getItem("account"));
+      if (!account) {
+        account = new Array([]);
+        account[0] = newAccount;
+        localStorage.setItem("account", JSON.stringify(account));
+        enqueueSnackbar("Your account has been created", {
+          variant: "success",
+        });
+        history.push("/login");
+        setLoading(false);
+      } else if (
+        account.filter((account) => account.username === values.username)
+          .length !== 0
+      ) {
+        enqueueSnackbar("Username is already exists", {
+          variant: "error",
+        });
+        setLoading(false);
+      } else {
+        account.push(newAccount);
+        localStorage.setItem("account", JSON.stringify(account));
+        enqueueSnackbar("Your account has been created", {
+          variant: "success",
+        });
+        history.push("/login");
+        setLoading(false);
+      }
+    }, 3000);
   };
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          {t("common.signup")}
-        </Typography>
-        <form
-          className={classes.form}
-          noValidate
-          onSubmit={formik.handleSubmit}
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="firstname"
-                label={t("common.firstname")}
-                name="firstname"
-                autoComplete="firstname"
-                autoFocus
-                value={formik.values.firstname}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.firstname && Boolean(formik.errors.firstname)
-                }
-                helperText={formik.touched.firstname && formik.errors.firstname}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="lastname"
-                label={t("common.lastname")}
-                name="lastname"
-                autoComplete="lastname"
-                autoFocus
-                value={formik.values.lastname}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.lastname && Boolean(formik.errors.lastname)
-                }
-                helperText={formik.touched.lastname && formik.errors.lastname}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label={t("common.username")}
-                name="username"
-                autoComplete="username"
-                autoFocus
-                value={formik.values.username}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.username && Boolean(formik.errors.username)
-                }
-                helperText={formik.touched.username && formik.errors.username}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label={t("common.password")}
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
-                helperText={formik.touched.password && formik.errors.password}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="allowExtraEmails"
-                    color="primary"
-                    variant="outlined"
-                  />
-                }
-                label={t("common.signup_checkBox")}
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+    <>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            {t("common.signup")}
+          </Typography>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={formik.handleSubmit}
           >
-            {t("common.register")}
-          </Button>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <Link to={"/login"}>{t("common.signup_haveAccount")}</Link>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="firstname"
+                  label={t("common.firstname")}
+                  name="firstname"
+                  autoComplete="firstname"
+                  value={formik.values.firstname}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.firstname && Boolean(formik.errors.firstname)
+                  }
+                  helperText={
+                    formik.touched.firstname && formik.errors.firstname
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="lastname"
+                  label={t("common.lastname")}
+                  name="lastname"
+                  autoComplete="lastname"
+                  value={formik.values.lastname}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.lastname && Boolean(formik.errors.lastname)
+                  }
+                  helperText={formik.touched.lastname && formik.errors.lastname}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label={t("common.username")}
+                  name="username"
+                  autoComplete="username"
+                  value={formik.values.username}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.username && Boolean(formik.errors.username)
+                  }
+                  helperText={formik.touched.username && formik.errors.username}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label={t("common.password")}
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.password && Boolean(formik.errors.password)
+                  }
+                  helperText={formik.touched.password && formik.errors.password}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      value="allowExtraEmails"
+                      color="primary"
+                      variant="outlined"
+                    />
+                  }
+                  label={t("common.signup_checkBox")}
+                />
+              </Grid>
             </Grid>
-            <Grid item className={classes.changeLanguageButton}>
-              <SelectionLanguage onChangeLanguage={handleChangeLanguage} />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              {t("common.register")}
+            </Button>
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Grid item>
+                <Link to={"/login"}>{t("common.signup_haveAccount")}</Link>
+              </Grid>
+              <Grid item className={classes.changeLanguageButton}>
+                <SelectionLanguage
+                  onChangeLanguage={handleChangeLanguage}
+                  currentLanguage={globalState.language}
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+          </form>
+        </div>
+      </Container>
+      {!!loading && <Loading />}
+    </>
   );
 }

@@ -3,8 +3,9 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const generateOptions = (customData, type) => {
+const generateOptions = (customData, type, title) => {
   const categories = customData.map((item) =>
     moment(item.Date).format("DD/MM/YYYY")
   );
@@ -15,7 +16,7 @@ const generateOptions = (customData, type) => {
       zoomType: "x",
     },
     title: {
-      text: "Tình hình covid trong nước",
+      text: title,
     },
     xAxis: {
       categories: categories,
@@ -48,17 +49,17 @@ const generateOptions = (customData, type) => {
     },
     series: [
       {
-        name: "Tổng số ca nhiễm",
+        name: "Total Cases",
         data: customData.map((item) => item[type[0]]),
         color: "yellow",
       },
       {
-        name: "Tổng số ca khỏi",
+        name: "Total Recovered ",
         data: customData.map((item) => item[type[1]]),
         color: "green",
       },
       {
-        name: "Tổng số ca chết",
+        name: "Total Deaths",
         data: customData.map((item) => item[type[2]]),
         color: "red",
       },
@@ -67,8 +68,10 @@ const generateOptions = (customData, type) => {
 };
 
 export default function LineChart({ country, type }) {
+  const { t } = useTranslation();
   const [options, setOptions] = useState({});
   const [reportType, setReportType] = useState("all");
+  const title = t("overview.overview");
   useEffect(() => {
     let customData = [];
     switch (reportType) {
@@ -86,8 +89,8 @@ export default function LineChart({ country, type }) {
         customData = country;
         break;
     }
-    setOptions(generateOptions(customData, type));
-  }, [country, reportType]); // eslint-disable-line react-hooks/exhaustive-deps
+    setOptions(generateOptions(customData, type, title));
+  }, [country, reportType, title]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -103,19 +106,19 @@ export default function LineChart({ country, type }) {
           color={reportType === "all" ? "secondary" : ""}
           onClick={() => setReportType("all")}
         >
-          Tất cả
+          {t("overview.allday")}
         </Button>
         <Button
           color={reportType === "30" ? "secondary" : ""}
           onClick={() => setReportType("30")}
         >
-          30 ngày
+          {t("overview.30day")}
         </Button>
         <Button
           color={reportType === "7" ? "secondary" : ""}
           onClick={() => setReportType("7")}
         >
-          7 ngày
+          {t("overview.7day")}
         </Button>
       </ButtonGroup>
       <HighchartsReact highcharts={Highcharts} options={options} />

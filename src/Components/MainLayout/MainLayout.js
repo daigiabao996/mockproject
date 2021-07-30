@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import PropTypes from "prop-types";
 import {
   AppBar,
+  Box,
   Button,
   CssBaseline,
   Divider,
@@ -13,22 +11,22 @@ import {
   ListItem,
   Toolbar,
   Typography,
-  Box,
 } from "@material-ui/core";
-import ToggleButton from "@material-ui/lab/ToggleButton";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import BallotIcon from "@material-ui/icons/Ballot";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import MapIcon from "@material-ui/icons/Map";
-import BallotIcon from "@material-ui/icons/Ballot";
-import { NavLink, Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import SelectionLanguage from "../SelectionLanguage/SelectionLanguage";
-import { GlobalActions } from "../../Redux/rootActions";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, useHistory } from "react-router-dom";
+import { GlobalActions } from "../../Redux/rootActions";
 import { checkToken } from "../../utilities/checkToken";
+import SelectionLanguage from "../SelectionLanguage/SelectionLanguage";
 
 const drawerWidth = 240;
 
@@ -78,7 +76,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
     marginRight: "20px",
   },
-  logoutButton: {
+  loginButton: {
+    textDecoration: "none",
+  },
+  logButton: {
     display: "flex",
     justifyContent: "flex-end",
   },
@@ -115,7 +116,7 @@ function MainLayout(props) {
   };
   const handleSignOut = () => {
     localStorage.removeItem("user");
-    history.push("/login");
+    history.push("/");
   };
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -127,12 +128,12 @@ function MainLayout(props) {
       <Divider />
       <List>
         <ListItem className={classes.navigation}>
-          <NavLink exact to={"/"}>
+          <NavLink exact to={"/home"}>
             <Button startIcon={<HomeOutlinedIcon />}>{t("common.home")}</Button>
           </NavLink>
         </ListItem>
         <ListItem className={classes.navigation}>
-          <NavLink exact to={"/news"}>
+          <NavLink exact to={"/"}>
             <Button startIcon={<BallotIcon />}>{t("common.news")}</Button>
           </NavLink>
         </ListItem>
@@ -177,27 +178,31 @@ function MainLayout(props) {
           <Box flex="1 0 auto" />
           <ToggleButton
             value="check"
-            selected={selected}
+            selected={globalState.theme === "dark" ? true : false}
             onChange={handleChangeModeTheme}
             className={classes.modeButton}
           >
-            {selected ? <Brightness4Icon /> : <Brightness7Icon />}
+            {globalState.theme === "dark" ? (
+              <Brightness4Icon />
+            ) : (
+              <Brightness7Icon />
+            )}
           </ToggleButton>
           {checkToken() ? (
             <Button
               variant="contained"
               color="secondary"
-              className={classes.logoutButton}
+              className={classes.logButton}
               onClick={handleSignOut}
             >
               {t("common.logout")}
             </Button>
           ) : (
-            <Link to={"/login"}>
+            <Link to={"/login"} className={classes.loginButton}>
               <Button
                 variant="contained"
                 color="secondary"
-                className={classes.logoutButton}
+                className={classes.logButton}
               >
                 {t("common.login")}
               </Button>
@@ -243,13 +248,5 @@ function MainLayout(props) {
     </div>
   );
 }
-
-MainLayout.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
 
 export default MainLayout;

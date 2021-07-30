@@ -1,6 +1,7 @@
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import mapAPI from "../../API/map/mapAPI";
 import Highlight from "../../Components/Highlight/Highlight";
@@ -27,6 +28,7 @@ export default function CovidDetail() {
   const countries = useSelector((state) => state.CountriesReducer.countries);
   const [country, setCountry] = useState([]);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const getSelectedCountry = () => {
     setLoading(true);
@@ -53,17 +55,17 @@ export default function CovidDetail() {
       const latestData = country[country.length - 1];
       return [
         {
-          title: "Số ca nhiễm",
+          title: `overview.case`,
           count: latestData.Confirmed,
           type: "confirmed",
         },
         {
-          title: "Khỏi",
+          title: `overview.recover`,
           count: latestData.Recovered,
           type: "recovered",
         },
         {
-          title: "Tử vong",
+          title: `overview.death`,
           count: latestData.Deaths,
           type: "death",
         },
