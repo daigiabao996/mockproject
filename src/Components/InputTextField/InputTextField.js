@@ -1,6 +1,7 @@
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 export default function InputTextField({
@@ -9,6 +10,7 @@ export default function InputTextField({
   countriesData,
 }) {
   const countries = useSelector((state) => state.CountriesReducer.countries);
+  const { t } = useTranslation();
   return (
     <div style={{ width: "50%", margin: "0 auto" }}>
       <Autocomplete
@@ -19,7 +21,7 @@ export default function InputTextField({
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Search input"
+            label={t("home.search")}
             margin="normal"
             variant="outlined"
             onChange={onChangeFilter}

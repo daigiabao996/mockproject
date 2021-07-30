@@ -1,5 +1,5 @@
+import { Card, CardContent, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import { CardContent, Typography, Card, makeStyles } from "@material-ui/core";
 import CountUp from "react-countup";
 
 const useStyles = makeStyles({
