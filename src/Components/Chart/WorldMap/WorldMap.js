@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import map from "@highcharts/map-collection/custom/world.geo.json";
 // Import Highcharts
 import Highcharts from "highcharts";
-import HighchartsMap from "highcharts/modules/map";
 import HighchartsReact from "highcharts-react-official";
+import HighchartsMap from "highcharts/modules/map";
+import React, { useEffect, useState } from "react";
 import "./WorldMap.scss";
-import map from "@highcharts/map-collection/custom/world.geo.json";
 
 HighchartsMap(Highcharts);
 
@@ -18,7 +18,7 @@ const initOptions = {
   },
 
   legend: {
-    layout: "vertical",
+    layout: "horizontal",
     align: "right",
     verticalAlign: "bottom",
   },

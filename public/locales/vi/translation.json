@@ -3,6 +3,7 @@
     "login": "Đăng nhập",
     "logout": "Đăng xuất",
     "signup": "Đăng ký mới",
+    "signin": "Đăng nhập",
     "register": "Đăng ký",
     "home": "Trang chủ",
     "news": "Tin tức",
@@ -12,14 +13,26 @@
     "password":"Mật khẩu",
     "username":"Tài khoản",
     "login_remember":"Ghi nhớ tài khoản",
-    "login_forgetPassword":"Quên mật khẩu?",
-    "login_haveAccount":"Đã có tài khoản, đi tới trang đăng nhập",
+    "login_haveAccount":"Chưa có tài khoản, đăng ký mới",
     "signup_haveAccount":"Bạn đã có tài khoản rồi, Đăng nhập?",
     "signup_checkBox":"Tôi muốn nhận thông tin qua mail"
   },
-  "home": {},
+    "home": {
+      "search": "Tìm kiếm"
+    },
     "homeDetail": {},
+    "news": {
+      "detail" : "Chi tiết",
+      "search": "Tìm kiếm"
+    },
     "overview": {
-      "title" : "Tình hình covid-19 của Thế giới"
+      "title" : "Tình hình covid-19 của Thế giới",
+      "case" : "Số ca nhiễm bệnh",
+      "recover" : "Số ca đã chữa khỏi",
+      "death" : "Số ca tử vong",
+      "overview" : "Tình hình covid-19 trong nước",
+      "allday": "Tất cả",
+      "30day" : "30 Ngày",
+      "7day" : "7 Ngày"
     }
 }

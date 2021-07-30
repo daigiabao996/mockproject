@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import mapAPI from "../../API/map/mapAPI";
 import LineChart from "../../Components/Chart/LineChart/LineChart";
+import WorldMap from "../../Components/Chart/WorldMap/WorldMap";
 import Highlight from "../../Components/Highlight/Highlight";
 import Loading from "../../Components/Loading/Loading";
 import MainLayout from "../../Components/MainLayout/MainLayout";
-import WorldMap from "../../Components/WorldMap/WorldMap";
 import { CountriesActions } from "../../Redux/rootActions";
 import { addCasesToGEOJson } from "../../utilities/addCasesToGEOJson";
 
@@ -52,17 +52,17 @@ export default function OverView() {
       const latestData = worldData[worldData.length - 1];
       return [
         {
-          title: "Số ca nhiễm",
+          title: `overview.case`,
           count: latestData.TotalConfirmed,
           type: "confirmed",
         },
         {
-          title: "Khỏi",
+          title: `overview.recover`,
           count: latestData.TotalRecovered,
           type: "recovered",
         },
         {
-          title: "Tử vong",
+          title: `overview.death`,
           count: latestData.TotalDeaths,
           type: "death",
         },
@@ -70,7 +70,6 @@ export default function OverView() {
     }
     return [];
   }, [worldData]);
-  console.log(worldData);
   useEffect(getMapData, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(getChartData, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (

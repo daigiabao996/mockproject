@@ -31,15 +31,15 @@ function App() {
       <CssBaseline>
         <Router>
           <Switch>
-            <PrivateRoute exact path="/" component={Home} />
+            <PrivateRoute exact path="/home" component={Home} />
             <PrivateRoute
               exact
               path="/countries/:country"
               component={CovidDetail}
             />
             <PrivateRoute exact path="/overview" component={OverView} />
-            <Route exact path="/news" component={News} />
-            <Route exact path="/news/:newsid" component={NewsDetail} />
+            <Route exact path="/" component={News} />
+            <Route exact path="/news/:newsID" component={NewsDetail} />
             <AuthRoute exact path="/login" component={SignIn} />
             <Route exact path="/register" component={Register} />
             <Route component={NotFound} />

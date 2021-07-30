@@ -2,6 +2,7 @@ import { Box } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import _ from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import mapAPI from "../../API/map/mapAPI";
@@ -44,6 +45,7 @@ const columns = [
 export default function Home() {
   const [countries, setCountries] = useState([]);
   const [data, setData] = useState([]);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
   const [loading, setLoading] = useState(false);

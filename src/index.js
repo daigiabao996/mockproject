@@ -1,12 +1,12 @@
+import { SnackbarProvider } from "notistack";
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
-import { store } from "./Redux/store";
-import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
 import "./i18n";
-import { SnackbarProvider } from "notistack";
+import { store } from "./Redux/store";
+import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <BrowserRouter>
