@@ -83,6 +83,11 @@ export default function SignUp() {
         });
         history.push("/login");
         setLoading(false);
+      } else if (values.username === "admin") {
+        enqueueSnackbar("You can't register with this username", {
+          variant: "error",
+        });
+        setLoading(false);
       } else if (
         account.filter((account) => account.username === values.username)
           .length !== 0
