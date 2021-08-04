@@ -1,6 +1,6 @@
 import { CssBaseline } from "@material-ui/core";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -17,13 +17,14 @@ import PrivateRoute from "./Router/PrivateRoute";
 
 function App() {
   const globalState = useSelector((state) => state.GlobalReducer);
+  const { i18n } = useTranslation();
   const theme = createTheme({
     palette: {
       type: globalState.theme,
     },
   });
   useEffect(() => {
-    i18next.changeLanguage(globalState.language);
+    i18n.changeLanguage(globalState.language);
   }, [globalState.language]);
 
   return (

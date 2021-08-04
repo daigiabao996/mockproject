@@ -88,6 +88,11 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
   content: {
+    [theme.breakpoints.up("sm")]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      flexGrow: 1,
+      padding: theme.spacing(3),
+    },
     flexGrow: 1,
     padding: theme.spacing(3),
     width: "100%",
