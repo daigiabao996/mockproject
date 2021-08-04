@@ -70,7 +70,7 @@ export default function OverView() {
     }
     return [];
   }, [worldData]);
-  useEffect(getMapData, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(getMapData, [countries]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(getChartData, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <MainLayout>

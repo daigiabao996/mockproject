@@ -11,18 +11,16 @@ import * as serviceWorker from "./serviceWorker";
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
-      <Suspense fallback={<div>Loading</div>}>
-        <SnackbarProvider
-          maxSnack={1}
-          dense={false}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-        >
-          <App />
-        </SnackbarProvider>
-      </Suspense>
+      <SnackbarProvider
+        maxSnack={1}
+        dense={false}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <App />
+      </SnackbarProvider>
     </Provider>
   </BrowserRouter>,
   document.getElementById("root")
