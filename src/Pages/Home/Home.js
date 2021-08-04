@@ -11,32 +11,32 @@ import Loading from "../../Components/Loading/Loading";
 import MainLayout from "../../Components/MainLayout/MainLayout";
 import { CountriesActions } from "../../Redux/rootActions";
 
-const columns = [
+const columns = (name) => [
   {
     field: "Country",
-    headerName: "Country",
+    headerName: name.arr[0],
     width: 250,
   },
   {
     field: "CountryCode",
-    headerName: "CountryCode",
+    headerName: name.arr[1],
     width: 230,
   },
   {
     field: "TotalConfirmed",
-    headerName: "TotalConfirmed",
+    headerName: name.arr[2],
     type: "number",
     width: 250,
   },
   {
     field: "TotalRecovered",
-    headerName: "TotalRecovered",
+    headerName: name.arr[3],
     type: "number",
     width: 250,
   },
   {
     field: "TotalDeaths",
-    headerName: "TotalDeaths",
+    headerName: name.arr[4],
     type: "number",
     width: 250,
   },
@@ -49,6 +49,15 @@ export default function Home() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
+  const name = {
+    arr: [
+      t("home.country"),
+      t("home.countrycode"),
+      t("home.case"),
+      t("home.recover"),
+      t("home.death"),
+    ],
+  };
   const getAllCountries = () => {
     setLoading(true);
     mapAPI
@@ -93,7 +102,7 @@ export default function Home() {
           <DataGrid
             rows={countries}
             getRowId={(row) => row.ID}
-            columns={columns}
+            columns={columns(name)}
             pageSize={7}
           />
         </div>
