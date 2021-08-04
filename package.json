@@ -17,8 +17,6 @@
     "highcharts": "^9.1.2",
     "highcharts-react-official": "^3.0.0",
     "i18next": "^20.3.4",
-    "i18next-browser-languagedetector": "^6.1.2",
-    "i18next-xhr-backend": "^3.2.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
@@ -31,7 +29,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "redux": "^4.1.0",
-    "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.9"

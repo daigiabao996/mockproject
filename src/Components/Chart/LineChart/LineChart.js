@@ -5,7 +5,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const generateOptions = (customData, type, title) => {
+const generateOptions = (customData, type, title, name) => {
   const categories = customData.map((item) =>
     moment(item.Date).format("DD/MM/YYYY")
   );
@@ -49,17 +49,17 @@ const generateOptions = (customData, type, title) => {
     },
     series: [
       {
-        name: "Total Cases",
+        name: name.arr[0],
         data: customData.map((item) => item[type[0]]),
         color: "yellow",
       },
       {
-        name: "Total Recovered ",
+        name: name.arr[1],
         data: customData.map((item) => item[type[1]]),
         color: "green",
       },
       {
-        name: "Total Deaths",
+        name: name.arr[2],
         data: customData.map((item) => item[type[2]]),
         color: "red",
       },
@@ -72,6 +72,9 @@ export default function LineChart({ country, type }) {
   const [options, setOptions] = useState({});
   const [reportType, setReportType] = useState("all");
   const title = t("overview.overview");
+  const name = {
+    arr: [t("overview.case"), t("overview.recover"), t("overview.death")],
+  };
   useEffect(() => {
     let customData = [];
     switch (reportType) {
@@ -89,7 +92,7 @@ export default function LineChart({ country, type }) {
         customData = country;
         break;
     }
-    setOptions(generateOptions(customData, type, title));
+    setOptions(generateOptions(customData, type, title, name));
   }, [country, reportType, title]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

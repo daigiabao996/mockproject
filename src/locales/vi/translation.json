@@ -18,9 +18,13 @@
     "signup_checkBox":"Tôi muốn nhận thông tin qua mail"
   },
     "home": {
-      "search": "Tìm kiếm"
+      "search": "Tìm kiếm",
+      "country": "Đất nước",
+      "countrycode": "Mã nước",
+      "case": "Tổng số ca nhiễm",
+      "recover": "Tổng số ca khỏi",
+      "death": "Tổng số ca chết"
     },
-    "homeDetail": {},
     "news": {
       "detail" : "Chi tiết",
       "search": "Tìm kiếm"

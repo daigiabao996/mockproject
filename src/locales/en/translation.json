@@ -18,9 +18,13 @@
       "signup_checkBox":"I want to receive inspiration, marketing promotions and updates via email."
     },
     "home": {
-      "search": "Search Field"
+      "search": "Search Field",
+      "country": "Country",
+      "countrycode": "CountryCode",
+      "case": "TotalConfirmed",
+      "recover": "TotalRecovered",
+      "death": "TotalDeaths"
     },
-    "coviddetail": {},
     "news": {
       "detail" : "Detail",
       "search": "Search Field"
