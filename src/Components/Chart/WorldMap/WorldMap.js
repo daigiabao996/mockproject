@@ -93,7 +93,7 @@ const initOptions = {
   ],
 };
 
-const HighMaps = ({ mapData }) => {
+const WorldMap = ({ mapData }) => {
   const [options, setOptions] = useState({});
   useEffect(() => {
     if (mapData && Object.keys(mapData).length) {
@@ -123,4 +123,4 @@ const HighMaps = ({ mapData }) => {
   );
 };
 
-export default React.memo(HighMaps);
+export default React.memo(WorldMap);

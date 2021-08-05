@@ -40,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: red[500],
+    width: "70px",
+    height: "70px",
   },
 }));
 export default function NewsDetail() {
@@ -50,8 +52,14 @@ export default function NewsDetail() {
     setExpanded(!expanded);
   };
   const [news, setNews] = useState([]);
+  const [color, setColor] = useState(null);
   const newsData = useSelector((state) => state.NewsReducer.news);
   const selectedNewsID = useSelector((state) => state.NewsReducer.selectedNews);
+  const handleChangeColor = () => {
+    if (color === "red") {
+      setColor(null);
+    } else setColor("red");
+  };
   const getNewsByTitle = () => {
     if (selectedNewsID) {
       const selectedNews = newsData.filter(
@@ -68,7 +76,7 @@ export default function NewsDetail() {
           <CardHeader
             avatar={
               <Avatar aria-label="recipe" className={classes.avatar}>
-                {item.author}
+                {item.source.name}
               </Avatar>
             }
             action={
@@ -76,8 +84,13 @@ export default function NewsDetail() {
                 <MoreVertIcon />
               </IconButton>
             }
-            title={item.title}
-            subheader={moment(item.publishedAt).format("YYYY-MM-DD HH:mm:ss")}
+            title={<Typography variant="h4">{item.title}</Typography>}
+            subheader={
+              <Typography variant="subtitle1" color="textSecondary">
+                {moment(item.publishedAt).format("YYYY-MM-DD HH:mm:ss")} by
+                Mr/Mrs. {item.author}
+              </Typography>
+            }
           />
           <CardMedia
             className={classes.media}
@@ -85,15 +98,26 @@ export default function NewsDetail() {
             title="Paella dish"
           />
           <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography variant="subtitle2" color="textSecondary">
               {item.description}
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
+            <IconButton
+              aria-label="add to favorites"
+              onClick={handleChangeColor}
+            >
+              <FavoriteIcon style={{ color: color }} />
             </IconButton>
-            <IconButton aria-label="share">
+            <IconButton
+              aria-label="share"
+              onClick={() => {
+                window.open(
+                  "http://www.facebook.com/sharer.php?u=https://www.covid-19news.com"
+                );
+                return false;
+              }}
+            >
               <ShareIcon />
             </IconButton>
             <IconButton
