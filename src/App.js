@@ -25,7 +25,7 @@ function App() {
   });
   useEffect(() => {
     i18n.changeLanguage(globalState.language);
-  }, [globalState.language]);
+  }, [globalState.language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ThemeProvider theme={theme}>

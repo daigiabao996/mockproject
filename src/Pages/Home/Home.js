@@ -92,7 +92,6 @@ export default function Home() {
         <InputTextField
           onChangeCb={handleOnChange}
           onChangeFilter={handleOnChangeFilter}
-          countriesData={data}
         />
       </Box>
       {loading ? (

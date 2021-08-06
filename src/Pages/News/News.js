@@ -1,5 +1,6 @@
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -20,6 +21,7 @@ import newsAPI from "../../API/news/newsAPI";
 import Loading from "../../Components/Loading/Loading";
 import MainLayout from "../../Components/MainLayout/MainLayout";
 import { NewsActions } from "../../Redux/rootActions";
+import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,6 +47,11 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "flex-end",
     },
   },
+  btnLoadMore: {
+    display: "block",
+    width: "100%",
+    margin: " 16px ",
+  },
 }));
 
 export default function News() {
@@ -55,10 +62,18 @@ export default function News() {
   const history = useHistory();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    setData(e.target.value);
+  const [loadingButton, setLoadingButton] = useState(false);
+  const [visible, setVisible] = useState(3);
+  const showMoreItems = () => {
+    setLoadingButton(true);
+    setTimeout(() => {
+      setVisible((prevValue) => prevValue + 3);
+      setLoadingButton(false);
+    }, 3000);
   };
+  const handleChange = _.debounce((e) => {
+    setData(e.target.value);
+  }, 500);
   const handleGetAllNews = () => {
     setLoading(true);
     newsAPI
@@ -91,7 +106,6 @@ export default function News() {
           type="search"
           variant="outlined"
           onChange={handleChange}
-          value={data}
           className={classes.input}
         />
       </div>
@@ -100,7 +114,7 @@ export default function News() {
       ) : (
         <div>
           <Grid container spacing={4}>
-            {search.map((item) => (
+            {search.slice(0, visible).map((item) => (
               <Grid item xs={12} sm={6} md={4} key={uuidv4()}>
                 <Card>
                   <CardActionArea
@@ -155,6 +169,15 @@ export default function News() {
                 </Card>
               </Grid>
             ))}
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={showMoreItems}
+              className={classes.btnLoadMore}
+            >
+              {loadingButton && <CircularProgress size={15} />}
+              {!loadingButton && "Load More"}
+            </Button>
           </Grid>
         </div>
       )}
