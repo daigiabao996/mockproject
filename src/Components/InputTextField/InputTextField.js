@@ -4,11 +4,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
-export default function InputTextField({
-  onChangeCb,
-  onChangeFilter,
-  countriesData,
-}) {
+export default function InputTextField({ onChangeCb, onChangeFilter }) {
   const countries = useSelector((state) => state.CountriesReducer.countries);
   const { t } = useTranslation();
   return (
@@ -25,8 +21,6 @@ export default function InputTextField({
             margin="normal"
             variant="outlined"
             onChange={onChangeFilter}
-            value={countriesData}
-            autoFocus
             InputProps={{
               ...params.InputProps,
               type: "search",
