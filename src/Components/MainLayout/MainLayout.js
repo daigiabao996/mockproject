@@ -122,7 +122,7 @@ function MainLayout(props) {
   };
   const handleSignOut = () => {
     localStorage.removeItem("user");
-    history.push("/");
+    history.push("/news");
   };
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -139,7 +139,7 @@ function MainLayout(props) {
           </NavLink>
         </ListItem>
         <ListItem className={classes.navigation}>
-          <NavLink exact to={"/"}>
+          <NavLink exact to={"/news"}>
             <Button startIcon={<BallotIcon />}>{t("common.news")}</Button>
           </NavLink>
         </ListItem>

@@ -84,7 +84,7 @@ export default function NewsDetail() {
                 <MoreVertIcon />
               </IconButton>
             }
-            title={<Typography variant="h4">{item.title}</Typography>}
+            title={<Typography variant="h5">{item.title}</Typography>}
             subheader={
               <Typography variant="subtitle1" color="textSecondary">
                 {moment(item.publishedAt).format("YYYY-MM-DD HH:mm:ss")} by
