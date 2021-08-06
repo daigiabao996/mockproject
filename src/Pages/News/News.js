@@ -176,7 +176,7 @@ export default function News() {
               className={classes.btnLoadMore}
             >
               {loadingButton && <CircularProgress size={15} />}
-              {!loadingButton && "Load More"}
+              {!loadingButton && t("news.loadmore")}
             </Button>
           </Grid>
         </div>

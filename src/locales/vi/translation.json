@@ -27,7 +27,8 @@
     },
     "news": {
       "detail" : "Chi tiết",
-      "search": "Tìm kiếm"
+      "search": "Tìm kiếm",
+      "loadmore": "Xem thêm"
     },
     "overview": {
       "title" : "Tình hình covid-19 của Thế giới",
