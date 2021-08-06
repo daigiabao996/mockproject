@@ -27,7 +27,8 @@
     },
     "news": {
       "detail" : "Detail",
-      "search": "Search Field"
+      "search": "Search Field",
+      "loadmore": "Load more"
     },
     "overview": {
       "title" : "Overview covid-19 in the world",
