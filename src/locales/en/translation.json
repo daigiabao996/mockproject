@@ -17,6 +17,15 @@
       "signup_haveAccount":"Already have an account? Sign in",
       "signup_checkBox":"I want to receive inspiration, marketing promotions and updates via email."
     },
+    "login": {
+      "mess_success": "Login successfully",
+      "mess_fail": "Login failed"
+    },
+    "register": {
+      "mess_success": "Your account has been created",
+      "mess_exist": "Username is already exists",
+      "mess_notAdmin": "You can't register with this username"
+    },
     "home": {
       "search": "Search Field",
       "country": "Country",
