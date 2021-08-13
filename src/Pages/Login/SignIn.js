@@ -55,7 +55,7 @@ export default function SignIn() {
     setTimeout(() => {
       if (values.username === "admin" && values.password === "admin") {
         localStorage.setItem("user", JSON.stringify(values));
-        enqueueSnackbar("Login successfully", {
+        enqueueSnackbar(t("login.mess_success"), {
           variant: "success",
         });
         history.push("/home");
@@ -68,14 +68,14 @@ export default function SignIn() {
         ).length !== 0
       ) {
         localStorage.setItem("user", JSON.stringify(values));
-        enqueueSnackbar("Login successfully", {
+        enqueueSnackbar(t("login.mess_success"), {
           variant: "success",
         });
         history.push("/home");
         setLoading(false);
       } else {
         setLoading(false);
-        enqueueSnackbar("Login failed", {
+        enqueueSnackbar(t("login.mess_fail"), {
           variant: "error",
         });
       }

@@ -17,6 +17,15 @@
     "signup_haveAccount":"Bạn đã có tài khoản rồi, Đăng nhập?",
     "signup_checkBox":"Tôi muốn nhận thông tin qua mail"
   },
+  "login": {
+    "mess_success": "Đăng nhập thành công",
+    "mess_fail": "Đăng nhập thất bại"
+  },
+  "register": {
+    "mess_success": "Tài khoản của bạn đã được đăng ký",
+    "mess_exist": "Tên đăng nhập đã tồn tại",
+    "mess_notAdmin": "Tên đăng nhập không được phép sử dụng"
+  },
     "home": {
       "search": "Tìm kiếm",
       "country": "Đất nước",

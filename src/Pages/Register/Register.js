@@ -78,13 +78,13 @@ export default function SignUp() {
         account = new Array([]);
         account[0] = newAccount;
         localStorage.setItem("account", JSON.stringify(account));
-        enqueueSnackbar("Your account has been created", {
+        enqueueSnackbar(t("register.mess_success"), {
           variant: "success",
         });
         history.push("/login");
         setLoading(false);
       } else if (values.username === "admin") {
-        enqueueSnackbar("You can't register with this username", {
+        enqueueSnackbar(t("register.mess_notAdmin"), {
           variant: "error",
         });
         setLoading(false);
@@ -92,14 +92,14 @@ export default function SignUp() {
         account.filter((account) => account.username === values.username)
           .length !== 0
       ) {
-        enqueueSnackbar("Username is already exists", {
+        enqueueSnackbar(t("register.mess_exist"), {
           variant: "error",
         });
         setLoading(false);
       } else {
         account.push(newAccount);
         localStorage.setItem("account", JSON.stringify(account));
-        enqueueSnackbar("Your account has been created", {
+        enqueueSnackbar(t("register.mess_success"), {
           variant: "success",
         });
         history.push("/login");
