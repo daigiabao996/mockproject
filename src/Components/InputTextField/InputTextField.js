@@ -12,6 +12,8 @@ export default function InputTextField({ onChangeCb, onChangeFilter }) {
       <Autocomplete
         id="auto-highlight"
         autoHighlight
+        freeSolo
+        disableClearable
         options={countries.map((option) => option.Country)}
         onChange={onChangeCb}
         renderInput={(params) => (
