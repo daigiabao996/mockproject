@@ -77,13 +77,13 @@ export default function News() {
   const handleGetAllNews = () => {
     setLoading(true);
     newsAPI
-      .getAllNews("covid")
+      .getAllNews()
       .then((response) => {
-        const value = response.articles.filter((index) =>
+        const value = response.filter((index) =>
           index.title.toLowerCase().includes(data)
         );
         setSearch(value);
-        dispatch(NewsActions.getNews(response.articles));
+        dispatch(NewsActions.getNews(response));
         setLoading(false);
       })
       .catch((err) => {
